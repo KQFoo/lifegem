@@ -9,6 +9,7 @@ function App() {
   const [popUp, setPopUp] = useState(false);
   const [saving, setSaving] = useState(false);
   const [unsaving, setUnsaving] = useState(false);
+  const [data, setData] = useState({});
 
   const showNotification = (message, type) => {
     const notification = document.createElement("div");
@@ -77,6 +78,7 @@ function App() {
     } else if (dataToSave.companyName !== "" || dataToSave.industry !== "" || dataToSave.netProfit !== 0 || dataToSave.stocks !== 0 || dataToSave.property !== 0 || dataToSave.crypto !== 0 || dataToSave.cash !== 0 || dataToSave.careerTitle !== "" || dataToSave.company !== "" || dataToSave.monthlyNetIncome !== 0) {
       localStorage.setItem("data", JSON.stringify(dataToSave));
       setSaving(true);
+      setData(dataToSave);
       //showNotification("Data saved successfully!", "success");
     }
   }
@@ -85,15 +87,28 @@ function App() {
     setActiveTab(tab);
   }
 
+  useEffect(() => {
+    const savedName = localStorage.getItem("name");
+
+    if (savedName) {
+      setName(savedName);
+      setSubmitted(true);
+    }
+  }, []);
+
   return (
     <>
-      <div className={`flex flex-col h-screen items-center justify-center relative ${popUp ? 'blur-none brightness-50' : ''}`} style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        {saving ? (<Profile />) : (
-          submitted ? (
+      {saving ? (
+        <div className="bg-gray-300 flex h-screen items-center justify-center">
+          <Profile data={data} />
+        </div>
+      ) : (
+        <div className={`flex flex-col h-screen items-center justify-center relative ${popUp ? 'blur-none brightness-50' : ''}`} style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+          {submitted ? (
             // <h1>Target Net Worth</h1>
             <>
-              <h1 className="mb-4 text-white font-light text-3xl">Welcome, {name}!</h1>
-              <div className="w-1/2 border border-gray-300 rounded-lg shadow bg-white border-gray-300">
+              <h1 className="mb-4 text-white font-light text-3xl hover:underline">Welcome, {name}!</h1>
+              <div className="w-1/2 rounded-lg shadow-lg bg-white border-gray-300">
                 <ul className="hidden text-lg font-semibold text-center text-gray-700 divide-x divide-gray-300 rounded-lg sm:flex dark:divide-gray-300 dark:text-gray-700 rtl:divide-x-reverse" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
                   <li className="w-1/2">
                     <button onClick={() => handleTabClick("business")} type="button" role="tab" aria-controls="business" aria-selected={activeTab === "business"} className={`inline-block w-full p-4 rounded-ss-lg ${activeTab === "business" ? 'bg-[#FEF9C3]' : 'bg-white'} hover:bg-[#FEF9C3] focus:outline-none`}>Business</button>
@@ -118,7 +133,7 @@ function App() {
                     </div>
                     <div className="">
                       <label className="block mb-2 text-sm font-medium text-gray-900">Target Monthly Net Profit (USD)</label>
-                      <input type="number" min={0} id="netProfit" placeholder="100,000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
+                      <input type="number" min={0} id="netProfit" placeholder="100000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
                     </div>
                     {/* <div className="flex flex-col items-center">
                   <button onClick={""} type="submit" className="mt-4 rounded-full w-48 px-4 py-1 border text-lg text-gray-900 bg-gray-200 transition duration-300 hover:bg-gray-300"><strong>Save Changes</strong></button>
@@ -128,19 +143,19 @@ function App() {
                     {/* Investment */}
                     <div className="mb-4">
                       <label className="block mb-2 text-sm font-medium text-gray-900">Stocks/ETF (USD)</label>
-                      <input type="number" min={0} id="stocks" placeholder="4,000,000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
+                      <input type="number" min={0} id="stocks" placeholder="4000000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
                     </div>
                     <div className="mb-4">
                       <label className="block mb-2 text-sm font-medium text-gray-900">Property/Land (USD)</label>
-                      <input type="number" min={0} id="property" placeholder="3,000,000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
+                      <input type="number" min={0} id="property" placeholder="3000000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
                     </div>
                     <div className="mb-4">
                       <label className="block mb-2 text-sm font-medium text-gray-900">Crypto (USD)</label>
-                      <input type="number" min={0} id="crypto" placeholder="2,000,000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
+                      <input type="number" min={0} id="crypto" placeholder="2000000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
                     </div>
                     <div className="">
                       <label className="block mb-2 text-sm font-medium text-gray-900">Cash (USD)</label>
-                      <input type="number" min={0} id="cash" placeholder="1,000,000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
+                      <input type="number" min={0} id="cash" placeholder="1000000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
                     </div>
                     {/* <div className="flex flex-col items-center">
                   <button onClick={""} type="submit" className="mt-4 rounded-full w-48 px-4 py-1 border text-lg text-gray-900 bg-gray-200 transition duration-300 hover:bg-gray-300"><strong>Save Changes</strong></button>
@@ -158,7 +173,7 @@ function App() {
                     </div>
                     <div className="">
                       <label className="block mb-2 text-sm font-medium text-gray-900">Target Monthly Net Income (USD)</label>
-                      <input type="number" min={0} id="monthlyNetIncome" placeholder="100,000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
+                      <input type="number" min={0} id="monthlyNetIncome" placeholder="100000" className="block w-full p-2 text-gray-900 border border-gray-300 bg-gray-50" />
                     </div>
                     {/* <div className="flex flex-col items-center">
                   <button onClick={""} type="submit" className="mt-4 rounded-full w-48 px-4 py-1 border text-lg text-gray-900 bg-gray-200 transition duration-300 hover:bg-gray-300"><strong>Save Changes</strong></button>
@@ -177,11 +192,11 @@ function App() {
             </>
           ) : (
             <>
-              <h1 className="text-8xl font-semibold text-white hover:text-[#FEF9C3]">
-                <span className="hover:underline">Your Life, Your Gem.</span>
+              <h1 className="text-6xl font-bold text-white hover:text-[#FEF9C3]">
+                <span className="hover:underline">Create your success profile now</span>
               </h1>
               <h3 className="text-3xl font-semibold mt-2.5 mb-4 text-white hover:text-[#FEF9C3]">
-                <span className="hover:underline">Harness the power of visualization to fuel your motivation.</span>
+                <span className="hover:underline">~ since <span className="bg-[#dc2626] italic">Your Life, Your Gem.</span></span>
               </h3>
               <div className="flex p-8">
                 <span className="inline-flex items-center px-4 text-lg text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md transition duration-300 hover:bg-gray-300">
@@ -189,13 +204,14 @@ function App() {
                     <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
                   </svg>
                 </span>
-                <input onChange={e => setName(e.target.value)} type="text" id="name" className="rounded-none bg-gray-50 border text-gray-900 block flex-1 min-w-0 w-full text-lg p-3 transition duration-300 transform hover:scale-110 focus:border-black focus:outline" placeholder="your name"
-                />
+                {/* <input onChange={e => setName(e.target.value)} type="text" id="name" className="rounded-none bg-gray-50 border text-gray-900 block flex-1 min-w-0 w-full text-lg p-3 transition duration-300 transform hover:scale-110 focus:border-black focus:outline" placeholder="your name" /> */}
+                <input onChange={e => setName(e.target.value)} type="text" id="name" className="rounded-none bg-gray-50 border text-gray-900 focus:outline-none flex-1 min-w-0 w-full text-lg p-3" placeholder="your name" />
                 <button onClick={handleNext} type="submit" className="inline-flex items-center px-4 text-lg text-gray-900 bg-gray-200 border rounded-s-0 border-gray-300 border-s-0 rounded-e-md transition duration-300 hover:bg-gray-300"><strong>Next</strong></button>
               </div>
             </>
-          ))}
-      </div>
+          )}
+        </div>
+      )}
       {popUp ? (
         <div id="info-popup" tabindex="-1" className="flex items-center justify-center fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
           <div className="relative p-4 w-full max-w-lg h-full md:h-auto">
@@ -203,7 +219,7 @@ function App() {
               <div className="mb-4 text-sm font-light text-gray-500 dark:text-gray-400">
                 <h3 className="mb-3 text-2xl font-bold text-gray-900">Are you sure?</h3>
                 <p className="font-medium text-gray-500">
-                  You'll lose all details entered here.
+                  You'll lose all the details.
                 </p>
               </div>
               <div className="flex justify-center items-center pt-0 space-x-4">
