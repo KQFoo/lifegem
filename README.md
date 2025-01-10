@@ -1,7 +1,7 @@
-# Lifegem: "Success" Profile creator
+# Lifegem: Profile creator
 
 ## Inspiration
-- Visualize the successful version of yourself in future
+- Visualize your financially successful future self.
 
 ## How to use
 - Enter name
@@ -9,6 +9,9 @@
 
 - Enter all details (if necessary only)
 <img width="2560" alt="image" src="public/formpage.png">
+
+- Want to remove all details? click "back" then "confirm"
+<img width="2560" alt="image" src="public/deletepopup.png">
 
 - Export as image
 <img width="2560" alt="image" src="public/exportpage.png">
